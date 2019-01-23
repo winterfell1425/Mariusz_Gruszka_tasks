@@ -6,6 +6,7 @@ goto stoptomcat
 
 :chrome
 start chrome "http://localhost:8080/crud/v1/task/getTasks"
+goto end
 
 :stoptomcat
 call %CATALINA_HOME%\bin\shutdown.bat
