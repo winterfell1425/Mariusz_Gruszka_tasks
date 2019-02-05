@@ -83,7 +83,7 @@ public class TrelloClientTest {
         assertEquals("Test task", newCard.getName());
         assertEquals("http://test.com", newCard.getShortUrl());
     }
-    @Test
+   /* @Test
     public void shouldReturnEmptyList() throws URISyntaxException {
         //Given
         URI uri = new URI("http://test.com/members/mariuszgruszka/boards?key=test&token=test&fields=name,id&lists=all");
@@ -94,5 +94,5 @@ public class TrelloClientTest {
 
         //Then
         assertEquals(new ArrayList<>(), emptyList);
-    }
+    }*/
 }
