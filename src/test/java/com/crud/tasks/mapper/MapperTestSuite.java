@@ -1,7 +1,6 @@
-package com.crud.tasks.trello.client;
+package com.crud.tasks.mapper;
 
 import com.crud.tasks.domain.*;
-import com.crud.tasks.mapper.TrelloMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +12,12 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class TrelloMapperTestSuite {
+public class MapperTestSuite {
     @Autowired
     TrelloMapper trelloMapper;
+
+    @Autowired
+    TaskMapper taskMapper;
 
     @Test
     public void testMapToBoards() {
@@ -48,6 +50,7 @@ public class TrelloMapperTestSuite {
         assertEquals("301", trelloBoards.get(0).getLists().get(1).getId());
         assertEquals("BlueList", trelloBoards.get(0).getLists().get(0).getName());
     }
+
     @Test
     public void testMapToBoardsDto() {
         //Given
@@ -80,6 +83,7 @@ public class TrelloMapperTestSuite {
         assertEquals("YellowList", trelloBoardDtoList.get(0).getLists().get(0).getName());
         assertEquals(true, trelloBoardDtoList.get(0).getLists().get(1).isClosed());
     }
+
     @Test
     public void testMapToList() {
         //Given
@@ -102,6 +106,7 @@ public class TrelloMapperTestSuite {
         assertEquals("GreenList", trelloLists.get(1).getName());
         assertEquals(false, trelloLists.get(1).isClosed());
     }
+
     @Test
     public void testMapToListDto() {
         //Given
@@ -124,6 +129,7 @@ public class TrelloMapperTestSuite {
         assertEquals("RedList", trelloDtoLists.get(0).getName());
         assertEquals(true, trelloDtoLists.get(1).isClosed());
     }
+
     @Test
     public void testMapToCardDto() {
         //Given
@@ -140,6 +146,7 @@ public class TrelloMapperTestSuite {
         assertEquals("bottom", trelloCardDto.getPos());
         assertEquals("3333", trelloCardDto.getListId());
     }
+
     @Test
     public void testMapToCard() {
         //Given
@@ -155,5 +162,57 @@ public class TrelloMapperTestSuite {
         assertEquals("Very blue", trelloCard.getDescription());
         assertEquals("top", trelloCard.getPos());
         assertEquals("1111", trelloCard.getListId());
+    }
+
+    @Test
+    public void testMapToTask() {
+        //Given
+        TaskDto taskDto = new TaskDto(
+                1000L,
+                "BlueTask",
+                "BlueContent");
+        //When
+        Task task = taskMapper.mapToTask(taskDto);
+        //Then
+        assertEquals((Object)1000L, (Object)task.getId());
+        assertEquals("BlueTask", task.getTitle());
+        assertEquals("BlueContent", task.getContent());
+    }
+    @Test
+    public void testMapToTaskDto() {
+        //Given
+        Task task = new Task(
+                2000L,
+                "RedTask",
+                "RedContent");
+        //When
+        TaskDto taskDto = taskMapper.mapToTaskDto(task);
+        //Then
+        assertEquals((Object) 2000L, (Object) task.getId());
+        assertEquals("RedTask", task.getTitle());
+        assertEquals("RedContent", task.getContent());
+    }
+    @Test
+    public void testMapToTaskDtoList() {
+        //Given
+        Task taskRed = new Task(
+                2000L,
+                "RedTask",
+                "RedContent");
+        Task taskWhite = new Task(
+                2001L,
+                "WhiteTask",
+                "WhiteContent");
+        List<Task> taskList = new ArrayList<>();
+        taskList.add(taskRed);
+        taskList.add(taskWhite);
+
+        //When
+        List<TaskDto> taskDtoList = taskMapper.mapToTaskDtoList(taskList);
+        //Then
+        assertEquals((Object) 2000L, (Object) taskDtoList.get(0).getId());
+        assertEquals((Object) 2001L, (Object) taskDtoList.get(1).getId());
+        assertEquals("RedTask", taskDtoList.get(0).getTitle());
+        assertEquals("WhiteContent", taskDtoList.get(1).getContent());
     }
 }
