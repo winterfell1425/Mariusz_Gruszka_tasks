@@ -7,10 +7,8 @@ import com.crud.tasks.service.DbService;
 import com.google.gson.Gson;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -82,12 +80,12 @@ public class TaskControllerTestSuit {
     }
     @Test
     public void testUpdateTask() throws Exception {
-        //return taskMapper.mapToTaskDto(service.saveTask(taskMapper.mapToTask(taskDto)));
         //Given
         TaskDto taskDto = new TaskDto(3L, "Red task", "Red content");
         Task task = new Task(3L, "Red task", "Red content");
 
-        when(taskMapper.mapToTask(taskDto)).thenReturn(task);
+        //when(taskMapper.mapToTask(taskDto)).thenReturn(task);
+        when(taskMapper.mapToTask(any())).thenReturn(task);
         when(service.saveTask(task)).thenReturn(task);
         when(taskMapper.mapToTaskDto(task)).thenReturn(taskDto);
 
@@ -107,11 +105,10 @@ public class TaskControllerTestSuit {
     @Test
     public void testCreateTask () throws Exception {
         //Given
-        //service.saveTask(taskMapper.mapToTask(taskDto))
         TaskDto taskDto = new TaskDto(3L, "Red task", "Red content");
         Task task = new Task(3L, "Red task", "Red content");
-       // when(taskMapper.mapToTask(taskDto)).thenReturn(task);
-      //when(service.saveTask(task)).thenReturn(task);
+        when(taskMapper.mapToTask(taskDto)).thenReturn(task);
+        when(service.saveTask(task)).thenReturn(task);
 
         Gson gson = new Gson();
         String jsonContent = gson.toJson(taskDto);
@@ -121,7 +118,7 @@ public class TaskControllerTestSuit {
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
                 .content(jsonContent))
-                .andExpect(status().isOk());;
+                .andExpect(status().isOk());
        verify(taskMapper,times(1)).mapToTask(taskDto);
        verify(service,times(1)).saveTask(task);
 
