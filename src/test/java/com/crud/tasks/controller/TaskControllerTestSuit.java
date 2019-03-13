@@ -84,7 +84,6 @@ public class TaskControllerTestSuit {
         TaskDto taskDto = new TaskDto(3L, "Red task", "Red content");
         Task task = new Task(3L, "Red task", "Red content");
 
-        //when(taskMapper.mapToTask(taskDto)).thenReturn(task);
         when(taskMapper.mapToTask(any())).thenReturn(task);
         when(service.saveTask(task)).thenReturn(task);
         when(taskMapper.mapToTaskDto(task)).thenReturn(taskDto);
@@ -121,6 +120,5 @@ public class TaskControllerTestSuit {
                 .andExpect(status().isOk());
        verify(taskMapper,times(1)).mapToTask(taskDto);
        verify(service,times(1)).saveTask(task);
-
     }
 }
